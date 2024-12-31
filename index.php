@@ -2,9 +2,18 @@
     include "partials/header.php";
     include "partials/notifications.php";
     include "config/Database.php";
+    include "classes/Movie.php";
 
 $database = new Database();
 $db = $database->connect();
+$movie = new Movie($db);
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST["add_movie"])) {
+        $movie->title = $_POST["movie"];
+        $movie->create();
+    }
+}
 ?>
 
 <!-- Main Content Container -->
