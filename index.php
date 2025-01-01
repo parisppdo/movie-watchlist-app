@@ -14,6 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $movie->create();
     }
 }
+
+// Fetching movie details
+$movies = $movie->read();
 ?>
 
 <!-- Main Content Container -->
@@ -28,20 +31,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <!-- Display Movies -->
     <ul>
+        <?php while($movie = $movies->fetch_assoc()): ?>
         <li class="completed">
-            <span class="completed">Sample Movie</span>
+            <span class="<?php echo $movie['is_watched'] ? 'completed' : '' ?>">
+                <?php echo $movie['title'] ?>
+            </span>
             <div>
-                <!-- Watched Movie -->
-                <form method="POST" style="display:inline;">
-                    <input type="hidden" name="id" value="1">
-                    <button class="complete" type="submit" name="watched_movie">Watched</button>
-                </form>
-
-                <!-- Undo Watched Movie -->
-                <form method="POST" style="display:inline;">
-                    <input type="hidden" name="id" value="1">
-                    <button class="undo" type="submit" name="undo_watched_movie">Undo</button>
-                </form>
+                <?php if(!$movie['is_watched']): ?>
+                    <!-- Watched Movie -->
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="id" value="1">
+                        <button class="complete" type="submit" name="watched_movie">Watched</button>
+                    </form>
+                <?php else: ?>
+                    <!-- Undo Watched Movie -->
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="id" value="1">
+                        <button class="undo" type="submit" name="undo_watched_movie">Undo</button>
+                    </form>
+                <?php endif; ?>
 
                 <!-- Delete Movie -->
                 <form method="POST" style="display:inline;">
@@ -67,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </form>
             </div>
         </li>
+        <?php endwhile; ?>
     </ul>
 </div>
 
