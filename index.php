@@ -13,6 +13,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $movie->title = $_POST["movie"];
         $movie->create();
     }
+    elseif (isset($_POST["watched_movie"])) {
+        $movie->watched($_POST['id']);
+    }
 }
 
 // Fetching movie details
@@ -34,13 +37,13 @@ $movies = $movie->read();
         <?php while($movie = $movies->fetch_assoc()): ?>
         <li class="completed">
             <span class="<?php echo $movie['is_watched'] ? 'completed' : '' ?>">
-                <?php echo $movie['title'] ?>
+                <?php echo ucfirst(strtolower($movie['title'])); ?>
             </span>
             <div>
                 <?php if(!$movie['is_watched']): ?>
                     <!-- Watched Movie -->
                     <form method="POST" style="display:inline;">
-                        <input type="hidden" name="id" value="1">
+                        <input type="hidden" name="id" value="<?php echo $movie['id'] ?>">
                         <button class="complete" type="submit" name="watched_movie">Watched</button>
                     </form>
                 <?php else: ?>

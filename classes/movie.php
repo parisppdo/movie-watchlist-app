@@ -19,8 +19,14 @@ class Movie {
 
     public function read() {
         $query = "SELECT * FROM " . $this->table . " ORDER BY created_at DESC";
-        $result = $this->conn->query($query);
-        return $result;
+        return $result = $this->conn->query($query);
+    }
+
+    public function watched($id) {
+        $query = "UPDATE " . $this->table . " SET is_watched = 1 WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
     }
 }
 ?>
