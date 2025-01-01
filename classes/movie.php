@@ -35,5 +35,12 @@ class Movie {
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
+
+    public function delete($id) {
+        $query = "DELETE FROM " . $this->table . " WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
+    }
 }
 ?>

@@ -20,6 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     elseif (isset($_POST["unset_watched_movie"])) {
         $movie->unset_watched($_POST['id']);
     }
+    elseif (isset($_POST["delete_movie"])) {
+        $movie->delete($_POST['id']);
+    }
 }
 
 // Fetching movie details
@@ -60,7 +63,7 @@ $movies = $movie->read();
 
                 <!-- Delete Movie -->
                 <form method="POST" style="display:inline;">
-                    <input type="hidden" name="id" value="1">
+                    <input type="hidden" name="id" value="<?php echo $movie['id'] ?>">
                     <button class="delete" type="submit" name="delete_movie">Delete</button>
                 </form>
             </div>
