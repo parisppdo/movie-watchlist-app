@@ -6,15 +6,19 @@
 
 $database = new Database();
 $db = $database->connect();
+
 $movie = new Movie($db);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST["add_movie"])) {
         $movie->title = $_POST["movie"];
-        $movie->create();
+        $a = $movie->create();
     }
     elseif (isset($_POST["watched_movie"])) {
-        $movie->watched($_POST['id']);
+        $movie->set_watched($_POST['id']);
+    }
+    elseif (isset($_POST["unset_watched_movie"])) {
+        $movie->unset_watched($_POST['id']);
     }
 }
 
@@ -41,39 +45,22 @@ $movies = $movie->read();
             </span>
             <div>
                 <?php if(!$movie['is_watched']): ?>
-                    <!-- Watched Movie -->
+                    <!-- Set Movie as Watched -->
                     <form method="POST" style="display:inline;">
                         <input type="hidden" name="id" value="<?php echo $movie['id'] ?>">
                         <button class="complete" type="submit" name="watched_movie">Watched</button>
                     </form>
                 <?php else: ?>
-                    <!-- Undo Watched Movie -->
+                    <!-- Reset Set Movie as Watched -->
                     <form method="POST" style="display:inline;">
-                        <input type="hidden" name="id" value="1">
-                        <button class="undo" type="submit" name="undo_watched_movie">Undo</button>
+                        <input type="hidden" name="id" value="<?php echo $movie['id'] ?>">
+                        <button class="undo" type="submit" name="unset_watched_movie">Not Watched</button>
                     </form>
                 <?php endif; ?>
 
                 <!-- Delete Movie -->
                 <form method="POST" style="display:inline;">
                     <input type="hidden" name="id" value="1">
-                    <button class="delete" type="submit" name="delete_movie">Delete</button>
-                </form>
-            </div>
-        </li>
-
-        <li>
-            <span>Another Movie</span>
-            <div>
-                <!-- Watched Movie -->
-                <form method="POST" style="display:inline;">
-                    <input type="hidden" name="id" value="2">
-                    <button class="complete" type="submit" name="watched_movie">Watched</button>
-                </form>
-
-                <!-- Delete Movie -->
-                <form method="POST" style="display:inline;">
-                    <input type="hidden" name="id" value="2">
                     <button class="delete" type="submit" name="delete_movie">Delete</button>
                 </form>
             </div>
