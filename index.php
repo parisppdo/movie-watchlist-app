@@ -1,9 +1,9 @@
 <?php
+    session_start();    // using Sessions to display messages
     include "partials/header.php";
     include "partials/notifications.php";
     include "config/Database.php";
     include "classes/Movie.php";
-    session_start();    // using Sessions to display messages
 
 $database = new Database();
 $db = $database->connect();
